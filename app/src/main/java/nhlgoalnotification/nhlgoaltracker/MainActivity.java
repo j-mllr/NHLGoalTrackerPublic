@@ -4,6 +4,7 @@ import Model.Game;
 import Model.LiveEventProvider;
 import Model.Schedule;
 import Model.ScheduleProvider;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -35,14 +36,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-//                if (i != 0){
-//                    selectedTeam = myAdapter.getItem(i);
-//                    if (Schedule.getInstance().isPlaying(selectedTeam)){
-//                        checkFeed();
-//                    } else {
-//                        startActivity(new Intent(MainActivity.this, NoGames.class));
-//                    }
-//                }
+                if (i != 0){
+                    selectedTeam = myAdapter.getItem(i);
+                    if (Schedule.getInstance().isPlaying(selectedTeam)){
+                        checkFeed();
+                    } else {
+                        startActivity(new Intent(MainActivity.this, NoGames.class));
+                    }
+                }
 
                 }
 
@@ -54,13 +55,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializeData() {
-        ScheduleProvider sp = new ScheduleProvider();
+        Thread thread = new Thread(new Runnable() {
 
-        try {
-            sp.getSchedule();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+            @Override
+            public void run() {
+                try  {
+                    try {
+                        ScheduleProvider sp = new ScheduleProvider();
+                        sp.getSchedule();
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+
     }
 
     private void checkFeed(){
