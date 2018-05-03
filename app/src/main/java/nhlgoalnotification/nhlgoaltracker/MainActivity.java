@@ -1,14 +1,21 @@
 package nhlgoalnotification.nhlgoaltracker;
 
-import android.support.v7.app.AppCompatActivity;
+import Model.Game;
+import Model.LiveEventProvider;
+import Model.Schedule;
+import Model.ScheduleProvider;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import java.net.MalformedURLException;
+
 public class MainActivity extends AppCompatActivity {
 
+    private String selectedTeam;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,16 +29,48 @@ public class MainActivity extends AppCompatActivity {
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mySpinner.setAdapter(myAdapter);
 
+        initializeData();
+
         mySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-            }
+//                if (i != 0){
+//                    selectedTeam = myAdapter.getItem(i);
+//                    if (Schedule.getInstance().isPlaying(selectedTeam)){
+//                        checkFeed();
+//                    } else {
+//                        startActivity(new Intent(MainActivity.this, NoGames.class));
+//                    }
+//                }
+
+                }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
+    }
+
+    private void initializeData() {
+        ScheduleProvider sp = new ScheduleProvider();
+
+        try {
+            sp.getSchedule();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void checkFeed(){
+        Game game = Schedule.getInstance().findGame(selectedTeam);
+        LiveEventProvider feed = new LiveEventProvider();
+
+        try {
+            feed.getEvents(game);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -42,6 +42,16 @@ public class Schedule implements Iterable<Game>{
         return false;
     }
 
+    public Game findGame(String s){
+
+            for (Game g : setOfGames){
+                if (g.isPlaying(s)){
+                    return g;
+                }
+            }
+            return null;
+        }
+
 
     /**
      * Returns an iterator over elements of type {@code T}.
