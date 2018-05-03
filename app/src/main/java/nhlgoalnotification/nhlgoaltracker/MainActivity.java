@@ -5,6 +5,7 @@ import Model.LiveEventProvider;
 import Model.Schedule;
 import Model.ScheduleProvider;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -17,6 +18,7 @@ import java.net.MalformedURLException;
 public class MainActivity extends AppCompatActivity {
 
     private String selectedTeam;
+    private Schedule schedule;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,16 +32,16 @@ public class MainActivity extends AppCompatActivity {
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mySpinner.setAdapter(myAdapter);
 
-        initializeData();
-
         mySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
+                new initializeData().execute();
+
                 if (i != 0){
                     selectedTeam = myAdapter.getItem(i);
-                    if (Schedule.getInstance().isPlaying(selectedTeam)){
-                        checkFeed();
+                    if (schedule.isPlaying(selectedTeam)){
+                        //checkFeed();
                     } else {
                         startActivity(new Intent(MainActivity.this, NoGames.class));
                     }
@@ -54,25 +56,34 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public class initializeData extends AsyncTask{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            initializeData();
+            schedule = Schedule.getInstance();
+
+            return null;
+        }
+    }
+
+
     private void initializeData() {
-        Thread thread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                try  {
-                    try {
-                        ScheduleProvider sp = new ScheduleProvider();
-                        sp.getSchedule();
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    }                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        thread.start();
-
+        ScheduleProvider sp = new ScheduleProvider();
+        try {
+            sp.getSchedule();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void checkFeed(){
