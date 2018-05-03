@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Objects;
+
 public class Game {
 
     private int id;
@@ -26,5 +28,21 @@ public class Game {
 
     public boolean isPlaying(String s){
         return home.getName().equals(s) || away.getName().equals(s);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Game game = (Game) o;
+        return id == game.id &&
+                Objects.equals(home, game.home) &&
+                Objects.equals(away, game.away);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, home, away);
     }
 }

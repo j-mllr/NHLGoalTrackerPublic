@@ -13,7 +13,7 @@ import java.net.URLConnection;
 
 public class LiveEventProvider {
 
-    String currEvent;
+    private String currEvent;
 
     private String makeURL(int id){
 
@@ -39,12 +39,21 @@ public class LiveEventProvider {
             JsonParser jp = new JsonParser(); //from gson
             JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent())); //Convert the input stream to a json element
             JsonObject rootobj = root.getAsJsonObject(); //May be an array, may be an object.
-            currEvent= rootobj.getAsJsonObject("liveData").getAsJsonObject("plays").getAsJsonObject("currentPlay").getAsJsonObject("result").get("event").getAsString(); //just grab the zipcode
+            String state = rootobj.get("gameData").getAsJsonObject().get("status").getAsJsonObject().get("detailedState").getAsString();
+            if (!(state.equals("Scheduled"))) {
+                currEvent = rootobj.getAsJsonObject("liveData").getAsJsonObject("plays").getAsJsonObject("currentPlay").getAsJsonObject("result").get("event").getAsString(); //just grab the zipcode
+            } else {
+                currEvent = "Scheduled";
+            }
         } catch (IOException e) {
             //e.printStackTrace();
         }
 
         System.out.println(currEvent);
 
+    }
+
+    public String getCurrEvent() {
+        return currEvent;
     }
 }

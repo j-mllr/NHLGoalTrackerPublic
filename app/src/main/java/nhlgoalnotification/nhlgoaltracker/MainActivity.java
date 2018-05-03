@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String selectedTeam;
     private Schedule schedule;
+    private String currentEvent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 if (i != 0){
                     selectedTeam = myAdapter.getItem(i);
                     if (schedule.isPlaying(selectedTeam)){
-                        //checkFeed();
+                        new checkLiveData().execute();
                     } else {
                         startActivity(new Intent(MainActivity.this, NoGames.class));
                     }
@@ -57,21 +58,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public class initializeData extends AsyncTask{
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(Object o) {
-            super.onPostExecute(o);
-        }
 
         @Override
         protected Object doInBackground(Object[] objects) {
             initializeData();
             schedule = Schedule.getInstance();
 
+            return null;
+        }
+    }
+
+    public class checkLiveData extends AsyncTask {
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            checkFeed();
             return null;
         }
     }
@@ -92,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             feed.getEvents(game);
+            currentEvent = feed.getCurrEvent();
+            System.out.println(currentEvent);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
