@@ -43,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
                     selectedTeam = myAdapter.getItem(i);
                     if (schedule.isPlaying(selectedTeam)){
                         new checkLiveData().execute();
+                        if (currentEvent.equals("Scheduled")){
+                            //Intent intent
+                            startActivity(new Intent(MainActivity.this, Scheduled.class));
+                        }
                     } else {
                         startActivity(new Intent(MainActivity.this, NoGames.class));
                     }
