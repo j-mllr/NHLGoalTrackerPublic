@@ -10,6 +10,10 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class LiveEventProvider {
 
@@ -44,6 +48,24 @@ public class LiveEventProvider {
                 currEvent = rootobj.getAsJsonObject("liveData").getAsJsonObject("plays").getAsJsonObject("currentPlay").getAsJsonObject("result").get("event").getAsString(); //just grab the zipcode
             } else {
                 currEvent = "Scheduled";
+                String datatime = rootobj.get("gameData").getAsJsonObject().get("datetime").getAsJsonObject().get("dateTime").getAsString();
+                String datatimetrimmed = datatime.substring(datatime.length() - 9, datatime.length()-1);
+                String timeZone = rootobj.get("gameData").getAsJsonObject().get("teams").getAsJsonObject().get("away").getAsJsonObject().get("venue").getAsJsonObject().get("timeZone").getAsJsonObject().get("tz").getAsString();
+                int timeZoneDiff = rootobj.get("gameData").getAsJsonObject().get("teams").getAsJsonObject().get("away").getAsJsonObject().get("venue").getAsJsonObject().get("timeZone").getAsJsonObject().get("offset").getAsInt();
+
+                SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss");
+                try {
+                    Date date = (Date) formatter.parse(datatimetrimmed);
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(date);
+                    cal.add(Calendar.HOUR, timeZoneDiff);
+                    date = cal.getTime();
+                    System.out.println("Ee");
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
             }
         } catch (IOException e) {
             //e.printStackTrace();
