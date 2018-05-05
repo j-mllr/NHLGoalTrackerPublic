@@ -1,5 +1,6 @@
 package Model;
 
+import java.sql.Time;
 import java.util.Objects;
 
 public class Game {
@@ -7,11 +8,17 @@ public class Game {
     private int id;
     private Team home;
     private Team away;
+    private String startTime;
+    private String currEvent;
 
     public Game(int id, Team away, Team home){
         this.id = id;
         this.away = away;
         this.home = home;
+    }
+
+    public String getStartTime() {
+        return startTime;
     }
 
     public int getId() {
@@ -28,6 +35,18 @@ public class Game {
 
     public boolean isPlaying(String s){
         return home.getName().equals(s) || away.getName().equals(s);
+    }
+
+    public void setTime(String t){
+        this.startTime = t;
+    }
+
+    public void setCurrEvent(String currEvent) {
+        this.currEvent = currEvent;
+    }
+
+    public String getCurrEvent() {
+        return currEvent;
     }
 
     @Override

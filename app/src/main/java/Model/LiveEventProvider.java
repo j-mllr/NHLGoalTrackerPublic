@@ -18,7 +18,6 @@ import java.util.Date;
 public class LiveEventProvider {
 
     private String currEvent;
-
     private String makeURL(int id){
 
         //"https://statsapi.web.nhl.com/api/v1/game/2017030213/feed/live";
@@ -45,9 +44,10 @@ public class LiveEventProvider {
             JsonObject rootobj = root.getAsJsonObject(); //May be an array, may be an object.
             String state = rootobj.get("gameData").getAsJsonObject().get("status").getAsJsonObject().get("detailedState").getAsString();
             if (!(state.equals("Scheduled"))) {
-                currEvent = rootobj.getAsJsonObject("liveData").getAsJsonObject("plays").getAsJsonObject("currentPlay").getAsJsonObject("result").get("event").getAsString(); //just grab the zipcode
+
+                g.setCurrEvent(rootobj.getAsJsonObject("liveData").getAsJsonObject("plays").getAsJsonObject("currentPlay").getAsJsonObject("result").get("event").getAsString()); //just grab the zipcode
             } else {
-                currEvent = "Scheduled";
+                g.setCurrEvent("Scheduled");
                 String datatime = rootobj.get("gameData").getAsJsonObject().get("datetime").getAsJsonObject().get("dateTime").getAsString();
                 String datatimetrimmed = datatime.substring(datatime.length() - 9, datatime.length()-1);
                 String timeZone = rootobj.get("gameData").getAsJsonObject().get("teams").getAsJsonObject().get("away").getAsJsonObject().get("venue").getAsJsonObject().get("timeZone").getAsJsonObject().get("tz").getAsString();
@@ -55,11 +55,23 @@ public class LiveEventProvider {
 
                 SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss");
                 try {
-                    Date date = (Date) formatter.parse(datatimetrimmed);
+                    Date origGameTime = (Date) formatter.parse(datatimetrimmed);
                     Calendar cal = Calendar.getInstance();
-                    cal.setTime(date);
+                    cal.setTime(origGameTime);
                     cal.add(Calendar.HOUR, timeZoneDiff);
-                    date = cal.getTime();
+                    int newHour = cal.get(Calendar.HOUR_OF_DAY);
+                    int newMin = cal.get(Calendar.MINUTE);
+
+                    if (newMin == 0){
+                        String newGameTime = newHour + ":" + newMin + "0 " + timeZone;
+                        g.setTime(newGameTime);
+                    } else {
+                        String newGameTime = newHour + ":" + newMin + timeZone;
+                        g.setTime(newGameTime);
+                    }
+
+
+
                     System.out.println("Ee");
 
                 } catch (ParseException e) {

@@ -6,6 +6,7 @@
         <item>Anaheim Ducks</item>
         <item>Arizona Coyotes</item>
         <item>Boston Bruins</item>
+        <item>Buffalo Sabres</item>
         <item>Calgary Flames</item>
         <item>Carolina Hurricanes</item>
         <item>Chicago Blackhawks</item>
@@ -25,6 +26,7 @@
         <item>Ottawa Senators</item>
         <item>Philadelphia Flyers</item>
         <item>Pittsburgh Penguins</item>
+        <item>San Jose Sharks</item>
         <item>St. Louis Blues</item>
         <item>Tampa Bay Lighting</item>
         <item>Toronto Maple Leafs</item>
@@ -34,4 +36,5 @@
         <item>Winnipeg Jets</item>
 
     </string-array>
+    <string name="title_activity_following">Following</string>
 </resources>

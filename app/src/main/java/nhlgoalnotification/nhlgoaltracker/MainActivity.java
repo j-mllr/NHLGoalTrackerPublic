@@ -39,20 +39,23 @@ public class MainActivity extends AppCompatActivity {
 
                 new initializeData().execute();
 
-                if (i != 0){
+                if (i != 0) {
                     selectedTeam = myAdapter.getItem(i);
-                    if (schedule.isPlaying(selectedTeam)){
+                    if (schedule.isPlaying(selectedTeam)) {
                         new checkLiveData().execute();
-                        if (currentEvent.equals("Scheduled")){
-                            //Intent intent
-                            startActivity(new Intent(MainActivity.this, Scheduled.class));
+
+                        if (currentEvent.equals("Scheduled")) {
+                            Intent intent = new Intent(MainActivity.this, Scheduled.class);
+                            intent.putExtra("gameTime", schedule.findGame(selectedTeam).getStartTime());
+                            startActivity(intent);
                         }
                     } else {
                         startActivity(new Intent(MainActivity.this, NoGames.class));
                     }
                 }
-
                 }
+
+
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -77,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Object doInBackground(Object[] objects) {
             checkFeed();
+            currentEvent = Schedule.getInstance().findGame(selectedTeam).getCurrEvent();
             return null;
         }
     }
@@ -97,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             feed.getEvents(game);
-            currentEvent = feed.getCurrEvent();
+            feed.getCurrEvent();
             System.out.println(currentEvent);
         } catch (MalformedURLException e) {
             e.printStackTrace();
