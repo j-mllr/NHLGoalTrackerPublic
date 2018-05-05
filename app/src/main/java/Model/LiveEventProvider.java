@@ -45,9 +45,9 @@ public class LiveEventProvider {
             String state = rootobj.get("gameData").getAsJsonObject().get("status").getAsJsonObject().get("detailedState").getAsString();
             if (!(state.equals("Scheduled"))) {
 
-                g.setCurrEvent(rootobj.getAsJsonObject("liveData").getAsJsonObject("plays").getAsJsonObject("currentPlay").getAsJsonObject("result").get("event").getAsString()); //just grab the zipcode
+                currEvent = rootobj.getAsJsonObject("liveData").getAsJsonObject("plays").getAsJsonObject("currentPlay").getAsJsonObject("result").get("event").getAsString(); //just grab the zipcode
             } else {
-                g.setCurrEvent("Scheduled");
+               currEvent= "Scheduled";
                 String datatime = rootobj.get("gameData").getAsJsonObject().get("datetime").getAsJsonObject().get("dateTime").getAsString();
                 String datatimetrimmed = datatime.substring(datatime.length() - 9, datatime.length()-1);
                 String timeZone = rootobj.get("gameData").getAsJsonObject().get("teams").getAsJsonObject().get("away").getAsJsonObject().get("venue").getAsJsonObject().get("timeZone").getAsJsonObject().get("tz").getAsString();

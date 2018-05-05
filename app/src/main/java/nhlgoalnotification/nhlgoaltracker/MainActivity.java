@@ -41,14 +41,14 @@ public class MainActivity extends AppCompatActivity {
 
                 if (i != 0) {
                     selectedTeam = myAdapter.getItem(i);
+
                     if (schedule.isPlaying(selectedTeam)) {
                         new checkLiveData().execute();
-
-                        if (currentEvent.equals("Scheduled")) {
-                            Intent intent = new Intent(MainActivity.this, Scheduled.class);
-                            intent.putExtra("gameTime", schedule.findGame(selectedTeam).getStartTime());
-                            startActivity(intent);
-                        }
+//                        if (currentEvent.equals("Scheduled")) {
+//                            Intent intent = new Intent(MainActivity.this, Scheduled.class);
+//                            intent.putExtra("gameTime", schedule.findGame(selectedTeam).getStartTime());
+//                            startActivity(intent);
+//                        }
                     } else {
                         startActivity(new Intent(MainActivity.this, NoGames.class));
                     }
@@ -75,13 +75,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public class checkLiveData extends AsyncTask {
+    public class checkLiveData extends AsyncTask<String, String, String> {
 
         @Override
-        protected Object doInBackground(Object[] objects) {
-            checkFeed();
-            currentEvent = Schedule.getInstance().findGame(selectedTeam).getCurrEvent();
-            return null;
+        protected String doInBackground(String... strings) {
+            return checkFeed();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            currentEvent = s;
+            if (currentEvent.equals("Game Scheduled")) {
+                Intent intent = new Intent(MainActivity.this, Scheduled.class);intent.putExtra("gameTime", schedule.findGame(selectedTeam).getStartTime());
+                startActivity(intent);
+            }
         }
     }
 
@@ -95,16 +102,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void checkFeed(){
+    private String checkFeed(){
         Game game = Schedule.getInstance().findGame(selectedTeam);
         LiveEventProvider feed = new LiveEventProvider();
 
         try {
             feed.getEvents(game);
-            feed.getCurrEvent();
-            System.out.println(currentEvent);
+            return feed.getCurrEvent();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+
+        return "S";
     }
 }

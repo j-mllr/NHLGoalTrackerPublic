@@ -12,6 +12,7 @@ public class Scheduled extends AppCompatActivity {
         setContentView(R.layout.activity_scheduled);
 
         EditText gameTime = (EditText) findViewById(R.id.editText);
-        gameTime.setText("Game starts at:" + getIntent().getExtras().get("gameTime"));
+        String s = "Game starts at:" + getIntent().getExtras().get("gameTime");
+        gameTime.setText(s);
     }
 }
