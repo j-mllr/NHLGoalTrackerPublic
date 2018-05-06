@@ -58,13 +58,13 @@ public class LiveEventProvider {
         if (!(state.equals("Scheduled"))) {
 
             currEvent = feed.getAsJsonObject("liveData").getAsJsonObject("plays").getAsJsonObject("currentPlay").getAsJsonObject("result").get("event").getAsString();
-            getScore(g);
             g.setCurrEvent(currEvent);
+            getScore(g);
+            getPeriodInfo(g);
         } else {
             currEvent = "Scheduled";
             g.setCurrEvent(currEvent);
             getStartTime(g);
-            getPeriodInfo(g);
 
         }
     }

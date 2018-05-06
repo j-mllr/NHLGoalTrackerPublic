@@ -81,9 +81,18 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             currentEvent = s;
             if (currentEvent.equals("Scheduled")) {
-                Intent intent = new Intent(MainActivity.this, Scheduled.class);intent.putExtra("gameTime", schedule.findGame(selectedTeam).getStartTime());
+                Intent intent = new Intent(MainActivity.this, Scheduled.class);
+                intent.putExtra("gameTime", schedule.findGame(selectedTeam).getStartTime());
                 startActivity(intent);
-            } else if (currentEvent.equals("Goal")){
+            } else {
+                Intent intent = new Intent(MainActivity.this, GameInfo.class);
+                intent.putExtra("homeTeam", schedule.findGame(selectedTeam).getHome().getName());
+                intent.putExtra("awayTeam", schedule.findGame(selectedTeam).getAway().getName());
+                intent.putExtra("scoreAway", schedule.findGame(selectedTeam).getScoreAway());
+                intent.putExtra("scoreHome", schedule.findGame(selectedTeam).getScoreHome());
+                intent.putExtra("period", schedule.findGame(selectedTeam).getPeriod());
+                intent.putExtra("timeRemaining", schedule.findGame(selectedTeam).getTimeInPeriod());
+                startActivity(intent);
                 // push notification
             }
         }
