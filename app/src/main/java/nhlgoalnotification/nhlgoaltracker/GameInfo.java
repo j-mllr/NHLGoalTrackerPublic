@@ -28,14 +28,20 @@ public class GameInfo extends AppCompatActivity {
         TextView away = (TextView) findViewById(R.id.textView4);
         TextView goalsHome = (TextView) findViewById(R.id.textView7);
         TextView goalsAway = (TextView) findViewById(R.id.textView9);
-        TextView periodInfo = (TextView) findViewById(R.id.textView10);
+        TextView periodInfo = (TextView) findViewById(R.id.textView13);
 
         home.setText(getIntent().getExtras().getString("homeTeam"));
         away.setText(getIntent().getExtras().getString("awayTeam"));
         goalsHome.setText(getIntent().getExtras().get("scoreHome").toString());
         goalsAway.setText(getIntent().getExtras().get("scoreAway").toString());
-        String periodString = getIntent().getExtras().getString("period") + ":" + getIntent().getExtras().getString("timeRemaining");
-        periodInfo.setText(periodString);
+
+       if (getIntent().getExtras().getString("period") == null){
+           String periodString = getIntent().getExtras().getString("timeRemaining");
+           periodInfo.setText(periodString);
+       } else {
+           String periodString = getIntent().getExtras().getString("period") + ":" + getIntent().getExtras().getString("timeRemaining");
+           periodInfo.setText(periodString);
+       }
 
         selectedTeam = getIntent().getExtras().getString("selectedTeam");
 

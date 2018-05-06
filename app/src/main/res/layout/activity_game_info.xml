@@ -23,7 +23,7 @@
             app:layout_constraintLeft_toRightOf="@+id/textView2" android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"/>
     <TextView
-            android:text="goals"
+            android:text="Goals:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textView5" android:layout_marginTop="8dp"
@@ -31,13 +31,15 @@
             app:layout_constraintLeft_toLeftOf="parent" app:layout_constraintRight_toLeftOf="@+id/textView2"
             android:layout_marginRight="8dp" android:layout_marginStart="8dp" android:layout_marginEnd="8dp"/>
     <TextView
-            android:text="period"
+            android:text="Period:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textView6" android:layout_marginTop="6dp"
+            android:id="@+id/textView6" android:layout_marginTop="5dp"
             app:layout_constraintTop_toBottomOf="@+id/textView5" android:layout_marginLeft="8dp"
             app:layout_constraintLeft_toLeftOf="parent" app:layout_constraintRight_toLeftOf="@+id/textView2"
-            android:layout_marginRight="8dp" android:layout_marginStart="8dp" android:layout_marginEnd="8dp"/>
+            android:layout_marginRight="8dp" android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.444"
+    />
     <TextView
             android:text="homeG"
             android:layout_width="wrap_content"
@@ -49,22 +51,24 @@
             android:text="awayG"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textView9" app:layout_constraintLeft_toRightOf="@+id/textView7"
+            android:id="@+id/textView9"
             android:layout_marginLeft="8dp" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" android:layout_marginStart="8dp"/>
-    <TextView
-            android:text="TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView10" app:layout_constraintLeft_toRightOf="@+id/textView6"
-            android:layout_marginLeft="8dp" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" android:layout_marginStart="8dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/textView4" android:layout_marginStart="8dp"
+            app:layout_constraintLeft_toLeftOf="@+id/textView4"/>
     <Button
             android:text="Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent" app:layout_constraintRight_toRightOf="parent"
-            android:id="@+id/button" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" tools:layout_constraintRight_creator="1"
-            tools:layout_constraintLeft_creator="1"/>
+            android:id="@+id/button"
+            tools:layout_constraintRight_creator="1"
+            tools:layout_constraintLeft_creator="1"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/textView13"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView13" app:layout_constraintLeft_toRightOf="@+id/textView6"
+            android:layout_marginLeft="8dp" android:layout_marginTop="4dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView7"/>
 </android.support.constraint.ConstraintLayout>
