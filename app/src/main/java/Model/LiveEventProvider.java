@@ -34,7 +34,8 @@ public class LiveEventProvider {
     public void getEvents(Game g) throws MalformedURLException {
 
 
-        String sURL = makeURL(g.getId());
+        //String sURL = makeURL(g.getId());
+        String sURL = "https://statsapi.web.nhl.com/api/v1/game/2017030225/feed/live";
 
         // Connect to the URL using java's native library
         URL url = new URL(sURL);

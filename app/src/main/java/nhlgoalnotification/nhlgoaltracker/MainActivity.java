@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(MainActivity.this, GameInfo.class);
+                intent.putExtra("selectedTeam", selectedTeam);
                 intent.putExtra("homeTeam", schedule.findGame(selectedTeam).getHome().getName());
                 intent.putExtra("awayTeam", schedule.findGame(selectedTeam).getAway().getName());
                 intent.putExtra("scoreAway", schedule.findGame(selectedTeam).getScoreAway());
@@ -120,4 +121,13 @@ public class MainActivity extends AppCompatActivity {
         }
             return null;
     }
+
+    public String getSelectedTeam() {
+        return selectedTeam;
+    }
+
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
 }

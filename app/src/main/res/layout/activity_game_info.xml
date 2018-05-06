@@ -43,4 +43,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" tools:layout_editor_absoluteY="82dp"
             tools:layout_editor_absoluteX="87dp" android:id="@+id/textView21"/>
+    <Button
+            android:text="Refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" tools:layout_editor_absoluteY="197dp"
+            tools:layout_editor_absoluteX="101dp" android:id="@+id/button"/>
 </android.support.constraint.ConstraintLayout>
