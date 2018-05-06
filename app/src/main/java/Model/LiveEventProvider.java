@@ -44,23 +44,39 @@ public class LiveEventProvider {
             JsonParser jp = new JsonParser(); //from gson
             JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent())); //Convert the input stream to a json element
             feed = root.getAsJsonObject(); //May be an array, may be an object.
-            String state = feed.get("gameData").getAsJsonObject().get("status").getAsJsonObject().get("detailedState").getAsString();
-            if (!(state.equals("Scheduled"))) {
-
-                currEvent = feed.getAsJsonObject("liveData").getAsJsonObject("plays").getAsJsonObject("currentPlay").getAsJsonObject("result").get("event").getAsString();
-                g.setCurrEvent(currEvent);
-            } else {
-                currEvent = "Scheduled";
-                g.setCurrEvent(currEvent);
-                getStartTime(g);
-
-            }
+            getCurrEvent(g);
         } catch (IOException e) {
             //e.printStackTrace();
         }
 
         System.out.println(currEvent);
 
+    }
+
+    private void getCurrEvent(Game g) {
+        String state = feed.get("gameData").getAsJsonObject().get("status").getAsJsonObject().get("detailedState").getAsString();
+        if (!(state.equals("Scheduled"))) {
+
+            currEvent = feed.getAsJsonObject("liveData").getAsJsonObject("plays").getAsJsonObject("currentPlay").getAsJsonObject("result").get("event").getAsString();
+            getScore(g);
+            g.setCurrEvent(currEvent);
+        } else {
+            currEvent = "Scheduled";
+            g.setCurrEvent(currEvent);
+            getStartTime(g);
+            getPeriodInfo(g);
+
+        }
+    }
+
+    private void getPeriodInfo(Game g) {
+        g.setPeriod(feed.getAsJsonObject("liveData").getAsJsonObject("linescore").get("currentPeriod").getAsInt());
+        g.setTimeInPeriod(feed.getAsJsonObject("liveData").getAsJsonObject("linescore").get("currentPeriodTimeRemaining").getAsString());
+    }
+
+    private void getScore(Game g) {
+        g.setScoreAway(feed.getAsJsonObject("liveData").getAsJsonObject("linescore").getAsJsonObject("teams").getAsJsonObject("away").get("goals").getAsInt());
+        g.setScoreHome(feed.getAsJsonObject("liveData").getAsJsonObject("linescore").getAsJsonObject("teams").getAsJsonObject("home").get("goals").getAsInt());
     }
 
     public String getCurrEvent() {
