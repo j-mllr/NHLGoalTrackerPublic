@@ -44,11 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
                     if (schedule.isPlaying(selectedTeam)) {
                         new checkLiveData().execute();
-//                        if (currentEvent.equals("Scheduled")) {
-//                            Intent intent = new Intent(MainActivity.this, Scheduled.class);
-//                            intent.putExtra("gameTime", schedule.findGame(selectedTeam).getStartTime());
-//                            startActivity(intent);
-//                        }
                     } else {
                         startActivity(new Intent(MainActivity.this, NoGames.class));
                     }
@@ -85,9 +80,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             currentEvent = s;
-            if (currentEvent.equals("Game Scheduled")) {
+            if (currentEvent.equals("Scheduled")) {
                 Intent intent = new Intent(MainActivity.this, Scheduled.class);intent.putExtra("gameTime", schedule.findGame(selectedTeam).getStartTime());
                 startActivity(intent);
+            } else if (currentEvent.equals("Goal")){
+                // push notification
             }
         }
     }
@@ -112,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
-        return "S";
+            return null;
     }
 }

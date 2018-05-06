@@ -18,14 +18,16 @@ import java.util.Date;
 public class LiveEventProvider {
 
     private String currEvent;
-    private String makeURL(int id){
+    private JsonObject feed;
+
+    private String makeURL(int id) {
 
         //"https://statsapi.web.nhl.com/api/v1/game/2017030213/feed/live";
 
         String base1 = "https://statsapi.web.nhl.com/api/v1/game/";
         String base2 = "/feed/live";
 
-        return base1+id+base2;
+        return base1 + id + base2;
     }
 
 
@@ -41,42 +43,16 @@ public class LiveEventProvider {
             request.connect();
             JsonParser jp = new JsonParser(); //from gson
             JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent())); //Convert the input stream to a json element
-            JsonObject rootobj = root.getAsJsonObject(); //May be an array, may be an object.
-            String state = rootobj.get("gameData").getAsJsonObject().get("status").getAsJsonObject().get("detailedState").getAsString();
+            feed = root.getAsJsonObject(); //May be an array, may be an object.
+            String state = feed.get("gameData").getAsJsonObject().get("status").getAsJsonObject().get("detailedState").getAsString();
             if (!(state.equals("Scheduled"))) {
 
-                currEvent = rootobj.getAsJsonObject("liveData").getAsJsonObject("plays").getAsJsonObject("currentPlay").getAsJsonObject("result").get("event").getAsString(); //just grab the zipcode
+                currEvent = feed.getAsJsonObject("liveData").getAsJsonObject("plays").getAsJsonObject("currentPlay").getAsJsonObject("result").get("event").getAsString();
+                g.setCurrEvent(currEvent);
             } else {
-               currEvent= "Scheduled";
-                String datatime = rootobj.get("gameData").getAsJsonObject().get("datetime").getAsJsonObject().get("dateTime").getAsString();
-                String datatimetrimmed = datatime.substring(datatime.length() - 9, datatime.length()-1);
-                String timeZone = rootobj.get("gameData").getAsJsonObject().get("teams").getAsJsonObject().get("away").getAsJsonObject().get("venue").getAsJsonObject().get("timeZone").getAsJsonObject().get("tz").getAsString();
-                int timeZoneDiff = rootobj.get("gameData").getAsJsonObject().get("teams").getAsJsonObject().get("away").getAsJsonObject().get("venue").getAsJsonObject().get("timeZone").getAsJsonObject().get("offset").getAsInt();
-
-                SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss");
-                try {
-                    Date origGameTime = (Date) formatter.parse(datatimetrimmed);
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(origGameTime);
-                    cal.add(Calendar.HOUR, timeZoneDiff);
-                    int newHour = cal.get(Calendar.HOUR_OF_DAY);
-                    int newMin = cal.get(Calendar.MINUTE);
-
-                    if (newMin == 0){
-                        String newGameTime = newHour + ":" + newMin + "0 " + timeZone;
-                        g.setTime(newGameTime);
-                    } else {
-                        String newGameTime = newHour + ":" + newMin + timeZone;
-                        g.setTime(newGameTime);
-                    }
-
-
-
-                    System.out.println("Ee");
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                currEvent = "Scheduled";
+                g.setCurrEvent(currEvent);
+                getStartTime(g);
 
             }
         } catch (IOException e) {
@@ -89,5 +65,32 @@ public class LiveEventProvider {
 
     public String getCurrEvent() {
         return currEvent;
+    }
+
+    public void getStartTime(Game g) {
+        String datatime = feed.get("gameData").getAsJsonObject().get("datetime").getAsJsonObject().get("dateTime").getAsString();
+        String datatimetrimmed = datatime.substring(datatime.length() - 9, datatime.length() - 1);
+        String timeZone = feed.get("gameData").getAsJsonObject().get("teams").getAsJsonObject().get("away").getAsJsonObject().get("venue").getAsJsonObject().get("timeZone").getAsJsonObject().get("tz").getAsString();
+        int timeZoneDiff = feed.get("gameData").getAsJsonObject().get("teams").getAsJsonObject().get("away").getAsJsonObject().get("venue").getAsJsonObject().get("timeZone").getAsJsonObject().get("offset").getAsInt();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss");
+        try {
+            Date origGameTime = (Date) formatter.parse(datatimetrimmed);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(origGameTime);
+            cal.add(Calendar.HOUR, timeZoneDiff);
+            int newHour = cal.get(Calendar.HOUR_OF_DAY);
+            int newMin = cal.get(Calendar.MINUTE);
+
+            if (newMin == 0) {
+                String newGameTime = newHour + ":" + newMin + "0 " + timeZone;
+                g.setTime(newGameTime);
+            } else {
+                String newGameTime = newHour + ":" + newMin + timeZone;
+                g.setTime(newGameTime);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -7,11 +7,9 @@
         android:layout_height="match_parent"
         tools:context="nhlgoalnotification.nhlgoaltracker.Scheduled">
 
-    <EditText
-            android:layout_width="368dp"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:text="Name"
-            android:ems="10"
-            tools:layout_editor_absoluteY="46dp" tools:layout_editor_absoluteX="194dp" android:id="@+id/editText"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="99dp"
+            android:layout_height="55dp" tools:layout_editor_absoluteY="22dp"
+            tools:layout_editor_absoluteX="162dp" android:id="@+id/textView3"/>
 </android.support.constraint.ConstraintLayout>

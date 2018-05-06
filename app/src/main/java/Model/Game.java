@@ -1,6 +1,5 @@
 package Model;
 
-import java.sql.Time;
 import java.util.Objects;
 
 public class Game {
@@ -10,6 +9,8 @@ public class Game {
     private Team away;
     private String startTime;
     private String currEvent;
+    private int scoreAway;
+    private int scoreHome;
 
     public Game(int id, Team away, Team home){
         this.id = id;
