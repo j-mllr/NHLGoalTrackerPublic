@@ -24,16 +24,16 @@ public class GameInfo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_info);
 
-        TextView home = (TextView) findViewById(R.id.textView6);
-        TextView away = (TextView) findViewById(R.id.textView10);
-        TextView goalsHome = (TextView) findViewById(R.id.textView15);
-        TextView goalsAway = (TextView) findViewById(R.id.textView16);
-        TextView periodInfo = (TextView) findViewById(R.id.textView21);
+        TextView home = (TextView) findViewById(R.id.textView2);
+        TextView away = (TextView) findViewById(R.id.textView4);
+        TextView goalsHome = (TextView) findViewById(R.id.textView7);
+        TextView goalsAway = (TextView) findViewById(R.id.textView9);
+        TextView periodInfo = (TextView) findViewById(R.id.textView10);
 
         home.setText(getIntent().getExtras().getString("homeTeam"));
         away.setText(getIntent().getExtras().getString("awayTeam"));
-        goalsHome.setText(getIntent().getExtras().getString("scoreHome"));
-        goalsAway.setText(getIntent().getExtras().getString("scoreAway"));
+        goalsHome.setText(getIntent().getExtras().get("scoreHome").toString());
+        goalsAway.setText(getIntent().getExtras().get("scoreAway").toString());
         String periodString = getIntent().getExtras().getString("period") + ":" + getIntent().getExtras().getString("timeRemaining");
         periodInfo.setText(periodString);
 
