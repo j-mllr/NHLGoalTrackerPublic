@@ -39,7 +39,7 @@ public class GameInfo extends AppCompatActivity {
            String periodString = getIntent().getExtras().getString("timeRemaining");
            periodInfo.setText(periodString);
        } else {
-           String periodString = getIntent().getExtras().getString("period") + ":" + getIntent().getExtras().getString("timeRemaining");
+           String periodString = getIntent().getExtras().getString("period") + " period with " + getIntent().getExtras().getString("timeRemaining") + " remaining";
            periodInfo.setText(periodString);
        }
 
@@ -89,6 +89,13 @@ public class GameInfo extends AppCompatActivity {
                 return null;
             }
             }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(GameInfo.this,MainActivity.class);
+        startActivity(intent);
+    }
         }
 
 
