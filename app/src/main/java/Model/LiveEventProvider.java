@@ -34,8 +34,8 @@ public class LiveEventProvider {
     public void getEvents(Game g) throws MalformedURLException {
 
 
-        //String sURL = makeURL(g.getId());
-        String sURL = "https://statsapi.web.nhl.com/api/v1/game/2017030225/feed/live";
+        String sURL = makeURL(g.getId());
+        //String sURL = "https://statsapi.web.nhl.com/api/v1/game/2017030225/feed/live";
 
         // Connect to the URL using java's native library
         URL url = new URL(sURL);
@@ -71,8 +71,8 @@ public class LiveEventProvider {
     }
 
     private void getPeriodInfo(Game g) {
-        g.setPeriod(feed.getAsJsonObject("liveData").getAsJsonObject("linescore").get("currentPeriod").getAsInt());
-        g.setTimeInPeriod(feed.getAsJsonObject("liveData").getAsJsonObject("linescore").get("currentPeriodTimeRemaining").getAsString());
+        g.setPeriod(feed.getAsJsonObject("liveData").getAsJsonObject("plays").getAsJsonObject("currentPlay").getAsJsonObject("about").get("ordinalNum").getAsString());
+        g.setTimeInPeriod(feed.getAsJsonObject("liveData").getAsJsonObject("plays").getAsJsonObject("currentPlay").getAsJsonObject("about").get("periodTimeRemaining").getAsString());
     }
 
     private void getScore(Game g) {

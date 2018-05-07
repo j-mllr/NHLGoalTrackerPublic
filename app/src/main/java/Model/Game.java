@@ -11,7 +11,7 @@ public class Game {
     private String currEvent;
     private int scoreAway;
     private int scoreHome;
-    private int period;
+    private String period;
     private String timeInPeriod;
 
     public Game(int id, Team away, Team home){
@@ -68,11 +68,11 @@ public class Game {
         return currEvent;
     }
 
-    public int getPeriod() {
+    public String getPeriod() {
         return period;
     }
 
-    public void setPeriod(int period) {
+    public void setPeriod(String period) {
         this.period = period;
     }
 
