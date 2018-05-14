@@ -1,4 +1,4 @@
-# NHLGoalTrackerPublic
+# NHLGoalTracker
 
 NHL android application that allows user to select a team and retrieve the live score of the game (if team is currently playing). If team is not scheduled, it will say "No Games Today". If game has not yet commenced, it give the time that the game starts in the timezone of the hometeam. 
 
